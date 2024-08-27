@@ -34,7 +34,34 @@ Principles:
 
 ## GitOps Benefits and drawbacks
 
-* Lighweight and vendor-neutral
-* Faster, safer, immutable and reproductible deployments
-* Eliminating configuration drift
-* Uses familiar tools and processes
+* Pros:
+  * Lighweight and vendor-neutral
+  * Faster, safer, immutable and reproductible deployments
+  * Eliminating configuration drift
+  * Uses familiar tools and processes
+  * Revision wih history
+* Cons
+  * Doesn't help with secret management
+  * Number of git repositories
+  * Challenges with programmatic updates
+  * Governance other than PR approval
+  * Malformed YAML/Config manifests
+
+## GitOps Projects tools
+
+* ArgoCD
+* FluxCD
+* Atlantis
+* Autoapply
+* CloudBees Rollout
+* JenkinsX
+* Flagger
+* Ignite
+* Faros
+* Helm operator
+* Weave GitOps Core
+* KubeStack
+* Weave cloud
+* GitKube
+* PipeCD
+* Werf
