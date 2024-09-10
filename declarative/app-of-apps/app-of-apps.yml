@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/FrenchyMike/ArgoCD-KK.git
-    targetRevision: app_of_apps
+    targetRevision: HEAD
     path: ./declarative/apps
   destination:
     server: https://kubernetes.default.svc
