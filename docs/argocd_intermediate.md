@@ -84,3 +84,61 @@ data:
       end
     return hs
 ```
+
+## ArgoCD Sync Strategies
+
+ArgoCD doc: https://argo-cd.readthedocs.io/en/stable/user-guide/auto_sync/
+
+* Manual sync or Automatic sync
+* Auto-pruning of resources
+* Self-heal of cluster
+
+Example:
+
+1. Configure self heal using CLI
+```bash
+$ argocd app set argocd/health-check-app --sync-policy automated
+$ argocd app set argocd/health-check-app --self-heal
+```
+_N.B: You can also cnfigure it through the web interface_
+
+From now if you attempt to remove k8s resources using `kubectl` cli, argocd will restore them
+
+You can do the same with auto-prune:
+```bash
+$ argocd app set <APPNAME> --auto-prune
+```
+
+This make resources auto-prune if they are removed from the git repository
+
+## Declarative set up 
+
+You can set your own app directly from a manifest
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: geocentric-model-app
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/FrenchyMike/gitops-argocd.git
+    targetRevision: HEAD
+    path: ./declarative/manifests/geocentric-model
+   
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: geocentric-model
+
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true  
+    automated:
+      prune: true
+      selfHeal: true
+```
