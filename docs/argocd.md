@@ -1,5 +1,65 @@
 # ArgoCD
 
+## Context
+
+__What is it ?__
+* Argo CD is a declarative, GitOps continuous delivery tool for Kubernetes resources defined in a Git repository 
+* Continuously monitors running applications and comparing their live state to the desired state 
+* It reports the deviations and provides visualizations to help developers manually or automatically sync the live state with the desired state.
+
+__Why us ArgoCD ?__
+* It extends the benefits of declarative specifications and Git-based configuration management
+* It is the first step in achieving continuous operations based on monitoring, analytics, and automated remediation 
+* It can deploy to multiple clusters and is Enterprise-friendly (auditability, compliance, security, RBAC, SSO and lot more)
+
+__How ArgoCD works ?__
+* It follows the GitOps pattern by using Git repositories as the source of truth for the desired state of app and the target deployment envs. 
+* Kustomize applications, Helm charts, Ksonnet applications, Jsonnet files, YAML/JSON manifests
+* It automates the synchronization of the desired application state with each of the specified target environments
+
+## Concepts/Terminology
+
+* Application: A group of Kubernetes resources as defined by a manifest
+* Application source type: The tool is used to build the application. E.g. Helm, Kustomize or Ksonnet
+* Project: Provide a logical grouping of applications, which is useful when Argo CD is used by multiple teams.
+* Target state: The desired state of an application, as represented by files in a Git repository.
+* Live state: The live state of that application. What pods, configmap, secrets, etc are created/deployed in a Kubernetes cluster.
+* Sync status: Whether or not the live state matches the target state. Is the deployed application the same as Git says it should be?
+* Sync: The process of making an application move to its target state. E.g. by applying changes to a Kubernetes cluster.
+* Sync operation status: Whether or not a sync succeeded
+* Refresh: Compare the latest code in Git with the live state. Figure out what is different.
+* Health: The health of the application, is it running correctly? Can it serve requests?
+
+## ArgoCD Features
+
+* Automated deployment of applications to specified target
+* environment in multiple clusters
+* Support for multiple config management/templating tools
+* (Kustomize, Helm, Ksonnet, Jsonnet, plain-YAML)
+* SSO Integration (OIDC, OAuth2, LDAP, SAML 2.0, GitHub,
+* GitLab, Microsoft, LinkedIn)
+* Multi-tenancy and RBAC policies for authorization
+* Rollback/Roll-anywhere to any application configuration committed in Git repository
+* Health status analysis of application resources
+* Automated configuration drift detection and visualization
+* Out-of-the-box Prometheus metrics
+* Audit trails for application events and API calls
+* PreSync, Sync, PostSync hooks to support complex application
+* rollouts (e.g.blue/green & canary upgrades)
+* Automated or manual syncing of applications to its desired
+* state
+* Web UI which provides real-time view of application activity
+* CLI and access tokens for automation and CI integration
+* Webhook integration (GitHub, BitBucket, GitLab)
+
+## Architecture
+
+![argocd_architecture](../img/argocd_architecture.png)
+
+## Core component
+
+![core-components](../img/core-components.png)
+
 ## Installation
 
 ### Using manifest
@@ -174,3 +234,5 @@ Let's make a modification of the solar-system docker image, commit and push and 
     siddharth67/solar-system:v6
     siddharth67/solar-system:v6
     ```
+
+>>>>>>> 5b6fb84d3b668d917a408b248c99de3b55932b85
