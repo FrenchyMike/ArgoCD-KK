@@ -142,3 +142,17 @@ spec:
       prune: true
       selfHeal: true
 ```
+
+## App of apps
+
+Let's now try to make an app of apps, the idea is to have an app manifest which will trigger other app:
+
+```mermaid
+flowchart TD
+    A[App] -->|Triggers| B(Apache-app)
+    A-->|Triggers| C(Nginx-app)
+    B-->D(apache/deployment.yml)
+    B-->E(apache/service.yml)
+    C-->F(nginx/deployment.yml)
+    C-->G(nginx/service.yml)
+```
