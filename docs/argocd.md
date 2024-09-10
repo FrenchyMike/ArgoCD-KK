@@ -234,5 +234,3 @@ Let's make a modification of the solar-system docker image, commit and push and 
     siddharth67/solar-system:v6
     siddharth67/solar-system:v6
     ```
-
->>>>>>> 5b6fb84d3b668d917a408b248c99de3b55932b85
