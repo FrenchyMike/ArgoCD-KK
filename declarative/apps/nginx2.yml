@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nginx-2-app
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  source:
+    repoURL: https://gitlab.com/bm-infra-project/nginx.git
+    targetRevision: HEAD
+    path: ./nginx-chart
+   
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: nginx2
+
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true  
+    automated:
+      prune: true
+      selfHeal: true
