@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apache-front
+spec:
+  selector:
+    matchLabels:
+      app: apache-front
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: apache-front
+    spec:
+      containers:
+      - name: apache-front
+        image: httpd:2
