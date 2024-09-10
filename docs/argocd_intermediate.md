@@ -145,6 +145,8 @@ spec:
 
 ## App of apps
 
+### Purpose
+
 Let's now try to make an app of apps, the idea is to have an app manifest which will trigger other app:
 
 ```mermaid
@@ -156,3 +158,19 @@ flowchart TD
     C-->F(nginx/deployment.yml)
     C-->G(nginx/service.yml)
 ```
+
+### Configure both nginx and apache manifests
+
+To feed our example we simply two basic manifests: [deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) and [service](https://kubernetes.io/fr/docs/concepts/services-networking/service/) for both nginx and apache.
+* Apache:
+  * [`deployment.yml`](../declarative/manifests/apache/deployment.yml)
+  * [`service.yml`](../declarative/manifests/apache/service.yml)
+* Nginx:
+  * [`deployment.yml`](../declarative/manifests/nginx/deployment.yml)
+  * [`service.yml`](../declarative/manifests/nginx/service.yml)
+
+### Configure a dedicated app
+
+* [Apache app](../declarative/apps/apache.yml)
+* [Apache app](../declarative/apps/apache.yml)
+
