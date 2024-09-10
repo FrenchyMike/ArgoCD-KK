@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: apache-app
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/FrenchyMike/ArgoCD-KK.git
+    targetRevision: app_of_apps # Later change to HEAD
+    path: ./declarative/manifests/apache
+   
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: apache
+
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true  
+    automated:
+      prune: true
+      selfHeal: true
