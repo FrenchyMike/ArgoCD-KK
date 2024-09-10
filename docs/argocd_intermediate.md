@@ -174,3 +174,6 @@ To feed our example we simply two basic manifests: [deployment](https://kubernet
 * [Apache app](../declarative/apps/apache.yml)
 * [Apache app](../declarative/apps/apache.yml)
 
+### Configure the app of apps
+
+* [App of apps](../declarative/app-of-apps/app-of-apps.yml)
