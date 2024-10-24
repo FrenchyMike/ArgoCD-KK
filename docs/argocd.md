@@ -64,7 +64,7 @@ __How ArgoCD works ?__
 
 ### Using manifest
 
-* Requirement: create a dedicated namespace: `kuebctl create ns argocd`
+* Requirement: create a dedicated namespace: `kubectl create ns argocd`
 
 ```bash
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
