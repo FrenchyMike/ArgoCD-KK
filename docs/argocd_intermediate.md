@@ -177,3 +177,124 @@ To feed our example we simply two basic manifests: [deployment](https://kubernet
 ### Configure the app of apps
 
 * [App of apps](../declarative/app-of-apps/app-of-apps.yml)
+
+
+## Helm chart
+
+### Deploy from a personal helm chart
+
+Assuming we are using this [directory](../helm-chart/) for helm chart:
+
+```bash
+helm-chart
+├── Chart.yaml
+├── templates
+│   ├── NOTES.txt
+│   ├── _helpers.tpl
+│   ├── configmap.yaml
+│   ├── deployment.yaml
+│   └── service.yaml
+└── values.yaml
+```
+
+It only contains:
+* configmap
+* deployment
+* service
+
+Let's use ArgoCD CLI to deploy this basic helm chart:
+```bash
+argocd app create helm-random-shapes \
+  --repo https://github.com/FrenchyMike/ArgoCD-KK \
+  --path helm-chart \
+  --helm-set replicaCount=2 \
+  --helm-set color.circle=pink \
+  --helm-set color.square=green \ 
+  --helm-set service.type=NodePort \ 
+  --dest-namespace default \
+  --dest-server https://kubernetes.default.svc
+```
+
+*Note: Here we are using the `helm-set` argument to override default variables from the `values.yml` file* 
+
+**Important**
+
+Here the chart is no longer managed by helm:
+```bash
+$ helm ls
+NAME    NAMESPACE       REVISION        UPDATED STATUS  CHART   APP VERSION
+```
+
+It's fully handled by argocd:
+```bash
+$ argocd app get helm-random-shapes
+
+Name:               argocd/helm-random-shapes
+Project:            default
+Server:             https://kubernetes.default.svc
+Namespace:          default
+URL:                https://127.0.0.1:43451/applications/helm-random-shapes
+Source:
+- Repo:             https://github.com/FrenchyMike/ArgoCD-KK
+  Target:
+  Path:             helm-chart
+SyncWindow:         Sync Allowed
+Sync Policy:        Manual
+Sync Status:        Synced to  (4e65b0a)
+Health Status:      Healthy
+
+GROUP  KIND        NAMESPACE  NAME                          STATUS  HEALTH   HOOK  MESSAGE
+       ConfigMap   default    helm-random-shapes-configmap  Synced                 configmap/helm-random-shapes-configmap created
+       Service     default    helm-random-shapes-service    Synced  Healthy        service/helm-random-shapes-service created
+apps   Deployment  default    helm-random-shapes-deploy     Synced  Healthy        deployment.apps/helm-random-shapes-deploy created
+```
+
+### Deploy from Bitnami library
+
+1. Configure Bitnami helm chart lib in the UI
+
+![helm-configuration](../img/helm-configuration.png)
+
+2. Create a new app
+
+![helm-app-1](../img/helm-app-1.png)
+
+![helm-app-2](../img/helm-app-2.png)
+
+As you can see on the screen shot above, we can directly choose an app from the available charts from the bitnami lib.
+
+Then we are able to select a version an override values:
+
+![helm-app-3](../img/helm-app-3.png)
+
+![helm-app-4](../img/helm-app-4.png)
+
+As we have seen in the previous case, the charts is managed by argocd and not by helm:
+
+```bash
+$ helm ls
+NAME    NAMESPACE       REVISION        UPDATED STATUS  CHART   APP VERSION
+
+$ argocd app get argocd/bitnami-helm-nginx-app
+Name:               argocd/bitnami-helm-nginx-app
+Project:            default
+Server:             https://kubernetes.default.svc
+Namespace:          bitnami
+URL:                https://127.0.0.1:43451/applications/bitnami-helm-nginx-app
+Source:
+- Repo:             https://charts.bitnami.com/bitnami
+  Target:           18.2.4
+SyncWindow:         Sync Allowed
+Sync Policy:        Automated
+Sync Status:        Synced to 18.2.4
+Health Status:      Progressing
+
+GROUP              KIND                 NAMESPACE  NAME                        STATUS   HEALTH       HOOK  MESSAGE
+                   Namespace                       bitnami                     Running  Synced             namespace/bitnami created
+networking.k8s.io  NetworkPolicy        bitnami    bitnami-helm-nginx-app      Synced                      networkpolicy.networking.k8s.io/bitnami-helm-nginx-app created
+policy             PodDisruptionBudget  bitnami    bitnami-helm-nginx-app      Synced                      poddisruptionbudget.policy/bitnami-helm-nginx-app created
+                   ServiceAccount       bitnami    bitnami-helm-nginx-app      Synced                      serviceaccount/bitnami-helm-nginx-app created
+                   Secret               bitnami    bitnami-helm-nginx-app-tls  Synced                      secret/bitnami-helm-nginx-app-tls created
+                   Service              bitnami    bitnami-helm-nginx-app      Synced   Progressing        service/bitnami-helm-nginx-app created
+apps               Deployment           bitnami    bitnami-helm-nginx-app      Synced   Healthy            deployment.apps/bitnami-helm-nginx-app created
+```
